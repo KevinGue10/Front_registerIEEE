@@ -250,7 +250,7 @@ constructor(props) {
     
     if (value === 'extra') {
    
-      axios.get('http://localhost:8080/datos_usuarios')
+      axios.get('http://192.168.1.8:8080/datos_usuarios')
         .then(response => {
           this.setState({ nombresApellidos: response.data });
           // Realizar acciones adicionales según la respuesta de la API
