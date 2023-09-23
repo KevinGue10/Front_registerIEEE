@@ -81,7 +81,7 @@ constructor(props) {
       titulo4:this.state.titulo4
     };
     console.log("boton presionado")
-  axios.post('http://localhost:8080/registro', formData)
+  axios.post('http://3.91.51.108:8080/registro', formData)
       .then(response => {
         // Procesar la respuesta del servidor
         console.log('Respuesta del servidor:', response.data);
@@ -250,7 +250,7 @@ constructor(props) {
     
     if (value === 'extra') {
    
-      axios.get('http://192.168.1.8:8080/datos_usuarios')
+      axios.get('http://172.31.35.242:8080/datos_usuarios')
         .then(response => {
           this.setState({ nombresApellidos: response.data });
           // Realizar acciones adicionales según la respuesta de la API
