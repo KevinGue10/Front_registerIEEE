@@ -8,6 +8,8 @@ body {
   background-image: url(img/total_back.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+
+
 }
 
 code {
@@ -15,23 +17,22 @@ code {
     monospace;
 }
 
-
 /* Estilos para la cabecera */
 h1 {
   color: black;
-  font-size: 55px;
+  font-size: 15vh;
   text-align: center;
   font-weight: bold;
-
-  height: 80px;
+  height: 10vw;
 }
 .header {
   background-color: black;
   color: white;
   display: flex;
   align-items: center;
-  max-width: 6000px;
-  min-width: 150px;
+  height: 10vw;
+  max-width: 8000px;
+  min-width: 0px;
   padding: 0%; /* Ajusta el espaciado según tus preferencias */
 }
 
@@ -42,11 +43,11 @@ h1 {
 
 .logo {
   width: 80%;
-  height: auto;
+  height: 10vw;
   justify-content: left;
 }
 .register{
-  font-size: 5vw;
+  font-size: 4vw;
   font-weight: bold;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   align-items: center;
@@ -61,9 +62,11 @@ h1 {
   justify-content: space-between;
   background-color: rgba(7, 4, 4, 0.637);
   margin: 3%;
+  min-height: 30vw;
   max-width: 2000px;
   min-width: 150px;
   margin-bottom: 0%;
+
 }
 .formulario{
   margin-left: 3%;
@@ -82,6 +85,7 @@ form {
  width: 110%;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+  min-height: 50vh;
  
 }
 
@@ -141,7 +145,7 @@ button{
   margin-bottom: 5%;
   color: black;
   width: 50%;
-  height: 60px;
+  height: 4vw;
   border-radius: 6px;
 
 }
