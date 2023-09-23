@@ -81,7 +81,7 @@ constructor(props) {
       titulo4:this.state.titulo4
     };
     console.log("boton presionado")
-  axios.post('http://3.91.51.108:8080/registro', formData)
+  axios.post('http://54.236.126.192:8080/registro', formData)
       .then(response => {
         // Procesar la respuesta del servidor
         console.log('Respuesta del servidor:', response.data);
@@ -91,7 +91,7 @@ constructor(props) {
         console.error('Error al enviar datos al servidor:', error);
       });
 
-      axios.post('http://3.91.51.108:8080/cobro', formData, {
+      axios.post('http://54.236.126.192:8080/cobro', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -176,7 +176,7 @@ constructor(props) {
       titulo3:this.state.titulo3,
       titulo4:this.state.titulo4
     };
-    axios.post('http://3.91.51.108:8080/proceso_pago', formData)
+    axios.post('http://54.236.126.192:8080/proceso_pago', formData)
     .then(async (response) => {
 
       // Verificar si la respuesta es exitosa
@@ -215,7 +215,7 @@ constructor(props) {
       apellidos: this.state.apellidos,
     }
     // Realiza la llamada a la API
-    axios.post('http://3.91.51.108:8080/consultar_estado_cobro',formData)
+    axios.post('http://54.236.126.192:8080/consultar_estado_cobro',formData)
       .then(response => {
       console.log("La respuesta es: ",response.data.cobroest)
         if(response.data.cobroest.state===  3){
@@ -250,7 +250,7 @@ constructor(props) {
     
     if (value === 'extra') {
    
-      axios.get('http://3.91.51.108:8080/datos_usuarios')
+      axios.get('http://54.236.126.192:8080/datos_usuarios')
         .then(response => {
           this.setState({ nombresApellidos: response.data });
           // Realizar acciones adicionales según la respuesta de la API
@@ -273,7 +273,7 @@ constructor(props) {
       nartextras: this.state.nartextras
     };
    
-  axios.post('http://3.91.51.108:8080/pagos_extras', formData)
+  axios.post('http://54.236.126.192:8080/pagos_extras', formData)
       .then(response => {
         // Procesar la respuesta del servidor
         this.setState({ cobro: response.data.cobro });
