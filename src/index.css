@@ -7,7 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url(img/total_back.jpg);
   background-size: cover;
+  background-attachment: fixed;
   background-repeat: no-repeat;
+
 
 
 }
@@ -16,6 +18,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 /* Estilos para la cabecera */
 h1 {
@@ -115,8 +118,8 @@ select {
 input[type="checkbox"],
 input[type="radio"]{
 
-  width: 25px;
-  height: 25px;
+  width: 1.5vw;
+  height: 1.5vw;
   border: 2px solid #efdada;
   margin-bottom: 6%;
   margin-top: 3%;
