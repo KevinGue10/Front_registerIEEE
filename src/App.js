@@ -44,6 +44,7 @@ constructor(props) {
       nartextras:'',
       mostrarEstado:false,
       mostrarEstado2:false,
+      mostrarEstado3:false,
       mostrarBtnFactura:false,
       mostrarFactura: false,
       datosNombre:'',
@@ -80,7 +81,7 @@ constructor(props) {
       titulo4:this.state.titulo4
     };
     console.log("boton presionado")
-  axios.post('http://localhost:80/registro', formData)
+  axios.post('http://localhost:8080/registro', formData)
       .then(response => {
         // Procesar la respuesta del servidor
         console.log('Respuesta del servidor:', response.data);
@@ -90,7 +91,7 @@ constructor(props) {
         console.error('Error al enviar datos al servidor:', error);
       });
 
-      axios.post('http://localhost:80/cobro', formData, {
+      axios.post('http://localhost:8080/cobro', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -175,7 +176,7 @@ constructor(props) {
       titulo3:this.state.titulo3,
       titulo4:this.state.titulo4
     };
-    axios.post('http://localhost:80/proceso_pago', formData)
+    axios.post('http://localhost:8080/proceso_pago', formData)
     .then(async (response) => {
 
       // Verificar si la respuesta es exitosa
@@ -199,7 +200,7 @@ constructor(props) {
     // Llama a la API cada 30 segundos durante 20 minutos
     this.interval = setInterval(() => {
       this.llamarEstado();
-    }, 30000);
+    }, 20000);
   
     // Detén la llamada a la API después de 20 minutos (20 minutos = 1200000 milisegundos)
     setTimeout(() => {
@@ -214,19 +215,25 @@ constructor(props) {
       apellidos: this.state.apellidos,
     }
     // Realiza la llamada a la API
-    axios.post('http://localhost:80/consultar_estado_cobro',formData)
+    axios.post('http://localhost:8080/consultar_estado_cobro',formData)
       .then(response => {
       console.log("La respuesta es: ",response.data.cobroest)
-        if(response.data.cobroest.state==2){
+        if(response.data.cobroest.state===  3){
           this.setState({ mostrarEstado: false });
           this.setState({ mostrarEstado2: true });
           this.setState({ mostrarBtnFactura: true });  
-          this.setState({ datosNombre: response.data.cobroest.name});
+          this.setState({ datosNombre: response.data.cobroest.payer_name});
           this.setState({ datosMontoCOP: response.data.cobroest.amount});
           this.setState({ datosMontoUS: response.data.cobroest.amountUS });
+          this.setState({ datosMetodo: response.data.cobroest.payment_method });
           this.setState({ datosFecha:  convertirTimestampAFechaHora(response.data.cobroest.date_payed)});
           this.setState({ datosReferencia: response.data.cobroest.reference_cobru});
           this.setState({ datosDescripcion: response.data.cobroest.description });
+      } if(response.data.cobroest.state===  2){
+        this.setState({ mostrarEstado: false });
+        this.setState({ mostrarEstado3: true });
+        this.setState({ mostrarBtnFactura: false });  
+
       }
         
       })
@@ -243,7 +250,7 @@ constructor(props) {
     
     if (value === 'extra') {
    
-      axios.get('http://localhost:80/datos_usuarios')
+      axios.get('http://localhost:8080/datos_usuarios')
         .then(response => {
           this.setState({ nombresApellidos: response.data });
           // Realizar acciones adicionales según la respuesta de la API
@@ -266,7 +273,7 @@ constructor(props) {
       nartextras: this.state.nartextras
     };
    
-  axios.post('http://localhost:80/pagos_extras', formData)
+  axios.post('http://localhost:8080/pagos_extras', formData)
       .then(response => {
         // Procesar la respuesta del servidor
         this.setState({ cobro: response.data.cobro });
@@ -711,6 +718,9 @@ constructor(props) {
             {this.state.mostrarEstado2 && (
               <div> Pago realizado correctamente</div>
                 )}
+             {this.state.mostrarEstado3 && (
+              <div style={{ color: 'red',}}> Error en el pago </div>
+                )}
            </div>
            
           </div>
@@ -761,7 +771,7 @@ function convertirTimestampAFechaHora(timestamp) {
      horaFormateada = `${horas < 10 ? '' : ''}${horas+19}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
   } else {
      fechaFormateada = `${año}-${mes < 10 ? '0' : ''}${mes}-${dia < 10 ? '0' : ''}${dia}`;
-     horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+     horaFormateada = `${horas < 10 ? '0' : ''}${horas-5}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
   }
   
   // Formatear la fecha y hora
