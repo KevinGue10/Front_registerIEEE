@@ -209,8 +209,7 @@ constructor(props) {
   
   llamarEstado = () => {
     const formData = {
-      nombre: this.state.nombre,
-      apellidos: this.state.apellidos,
+    nombres: this.state.nombresApellidos,
     }
     // Realiza la llamada a la API
     axios.post('http://54.236.126.192:8080/consultar_estado_cobro',formData)
