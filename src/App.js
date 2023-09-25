@@ -83,8 +83,6 @@ constructor(props) {
     console.log("boton presionado")
   axios.post('http://54.236.126.192:8080/registro', formData)
       .then(response => {
-        // Procesar la respuesta del servidor
-        console.log('Respuesta del servidor:', response.data);
       })
       .catch(error => {
         // Manejar errores, si los hay
@@ -217,7 +215,6 @@ constructor(props) {
     // Realiza la llamada a la API
     axios.post('http://54.236.126.192:8080/consultar_estado_cobro',formData)
       .then(response => {
-      console.log("La respuesta es: ",response.data.cobroest)
         if(response.data.cobroest.state===  3){
           this.setState({ mostrarEstado: false });
           this.setState({ mostrarEstado2: true });
@@ -233,7 +230,6 @@ constructor(props) {
         this.setState({ mostrarEstado: false });
         this.setState({ mostrarEstado3: true });
         this.setState({ mostrarBtnFactura: false });  
-
       }
         
       })
