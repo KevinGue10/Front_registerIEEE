@@ -10,8 +10,9 @@ constructor(props) {
       opregistro:'',
       nombre: '',
       apellidos: '',
-      selectedCountry: '', // Estado para almacenar el país seleccionado
-      countries: [], // Estado para almacenar la lista de países
+      selectedCountry: '',
+      countries: [],
+      indicativos: '+',
       afiliacion: '',
       correo: '',
       telefono: '',
@@ -22,6 +23,8 @@ constructor(props) {
       tipoAsistencia: 'Presencial',
       extrap1: '',
       extrap2: '',
+      impuesto:'',
+      pimpuesto: 0,
       cobro: 0,
       mostrarMensajeExito: false, 
       mensaje: '',
@@ -67,7 +70,7 @@ constructor(props) {
       pais: this.state.selectedCountry,
       afiliacion: this.state.afiliacion,
       correo: this.state.correo,
-      telefono: this.state.telefono,
+      telefono: this.state.indicativos+" "+this.state.telefono,
       oficio: this.state.oficio,
       tipoParticipacion: this.state.tipoParticipacion,
       tipoAsistencia:this.state.tipoAsistencia,
@@ -78,7 +81,8 @@ constructor(props) {
       titulo1:this.state.titulo1,
       titulo2:this.state.titulo2,
       titulo3:this.state.titulo3,
-      titulo4:this.state.titulo4
+      titulo4:this.state.titulo4,
+      pimpuesto:this.state.pimpuesto
     };
     console.log("boton presionado")
   axios.post('http://54.236.126.192:8080/registro', formData)
@@ -123,6 +127,7 @@ constructor(props) {
       // Ordena la lista de países por nombre común
       const sortedCountries = data.sort((a, b) => a.name.common.localeCompare(b.name.common));
       this.setState({ countries: sortedCountries });
+
     })
     .catch((error) => {
       console.error('Error al cargar la lista de países', error);
@@ -149,6 +154,10 @@ constructor(props) {
   };
   handleCountryChange = (event) => {
     this.setState({ selectedCountry: event.target.value });
+  };
+
+  handleIndiChange = (event) => {
+    this.setState({ selectedIndi: event.target.value });
   };
 
 
@@ -208,8 +217,16 @@ constructor(props) {
   };
   
   llamarEstado = () => {
-    const formData = {
+    let formData;
+    console.log("El tamaño es :: "+this.state.selectedNombreApellido.length)
+    if (this.state.selectedNombreApellido.length!==0){
+    formData = {
     nombres: this.state.selectedNombreApellido,
+    }
+  } else {
+    formData = {
+      nombres: this.state.nombre+" "+this.state.apellidos,
+      } 
     }
     // Realiza la llamada a la API
     axios.post('http://54.236.126.192:8080/consultar_estado_cobro',formData)
@@ -272,6 +289,7 @@ constructor(props) {
       .then(response => {
         // Procesar la respuesta del servidor
         this.setState({ cobro: response.data.cobro });
+        
       })
       .catch(error => {
         // Manejar errores, si los hay
@@ -288,7 +306,7 @@ constructor(props) {
 
 
   render() {
-    const { numDocuments, articles, selectedCountry, countries } = this.state;
+    const { numDocuments, articles, selectedCountry, countries} = this.state;
     return (
       
       
@@ -304,10 +322,7 @@ constructor(props) {
     <div class="contenido">
       <div class="formulario">
         <form onSubmit={this.handleSubmit}>
-        
-        
         <label>
-           
             <br />
             <select
               name="opregistro"
@@ -357,9 +372,9 @@ constructor(props) {
           >
             <option value="">Selecciona un país</option>
             {countries.map((country) => (
-              <option key={country.cca2} value={country.name.common}>
-                {country.name.common}
-              </option>
+              <option key={country.name.common} value={country.callingCodes && country.callingCodes[0]}>
+              {country.name.common}
+            </option>
             ))}
           </select>
         </label>
@@ -395,9 +410,17 @@ constructor(props) {
             Teléfono
             <br />
             <input
+              class='indicativo'
+              type="text"
+              name="indicativos"
+              value={this.state.indicativos}
+              onChange={this.handleInputChange}
+              required
+            />
+            <input
+              class='telef'
               type="tel"
               name="telefono"
-              placeholder='+xx xxxxxxxxxx'
               value={this.state.telefono}
               onChange={this.handleInputChange}
               required
@@ -419,13 +442,14 @@ constructor(props) {
           </label>
           <br />
           <label>
-              Miembro IEEE
+             
               <input
                 type="checkbox"
                 name="esMiembroIEEE"
                 checked={this.state.esMiembroIEEE}
                 onChange={() => this.setState({ esMiembroIEEE: !this.state.esMiembroIEEE })}
               />
+               ¿Es Miembro IEEE ? 
             </label>
             <br />
 
@@ -543,59 +567,88 @@ constructor(props) {
         </div>
       )}
        {this.state.tipoParticipacion === 'Asistente' && (
+        
         <div class="tutoriales">
          
           <label>
             Selecciona los tutoriales por asistir:
           <br />
             <input
+              class="tut"
               type="checkbox"
               name="titulo1"
               checked={this.state.titulo1}
               onChange={() => this.setState({ titulo1: !this.state.titulo1 })}
             />
-            9:00: INFORMATION TECHNOLOGIES MANAGEMENT AND COMPETITIVE INTELLIGENCE. By: Jose-Ignacio Castillo.
+            9:00: Information technologies management and competitive intelligence. By: Jose-Ignacio Castillo.
             
           </label>
           <br />
           <label>
             <input
+              class="tut"
               type="checkbox"
               name="titulo2"
               checked={this.state.titulo2}
               onChange={() => this.setState({ titulo2: !this.state.titulo2 })}
             />
-           9:00: TARIFF STRUCTURE FOR WHOLESALE AND RETAIL ENERGY MARKETS. By: Raquel Ronderos.
+           9:00: Tariff structure for wholesale and retail energy markets. By: Raquel Ronderos.
           </label>
           <br />
           <label>
             <input
+            class="tut"
               type="checkbox"
               name="titulo3"
               checked={this.state.titulo3}
               onChange={() => this.setState({ titulo3: !this.state.titulo3 })}
             />
-          15:00: DATA ANALYTICS: EMPOWERING INSIGHTS AND INFORMED DECISION-MAKING. By: Ana-Karina Rodríguez.
+          15:00: Data analytics: empowering insights and informed decision-making. By: Ana-Karina Rodríguez.
 
           </label>
           <br />
           <label>
             <input
+            class="tut"
               type="checkbox"
               name="titulo4"
               checked={this.state.titulo4}
               onChange={() => this.setState({ titulo4: !this.state.titulo4 })}
             />
-             15:00:  TRENDS ON MICRO AND NANOELECTRONICS. By: Ricardo Reis.
+             15:00:  Trends on micro and nanoelectronics.. By: Ricardo Reis.
           </label>
           <br />
         </div>
       )}
+             <label>
+             <input
+               type="checkbox"
+               name="impuesto"
+               checked={this.state.impuesto}
+               onChange={() => this.setState({ impuesto: !this.state.impuesto })}
+             />
+              ¿Requiere pagar impuestos?
+           </label>
+           <br />
+           {this.state.impuesto && (
+              <label>
+               Porcentaje a pagar
+                <br/>
+                <input
+                  type="number"
+                  name="pimpuesto"
+                  value={this.state.pimpuesto}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+            )}
+            <br />
+
 
           <button type="submit">Confirmar</button>
 
           {this.state.mostrarMensajeExito && (
-        <div style={{ color: 'yellow', fontSize: '12px', marginTop: '10px' }}>
+        <div style={{ color: 'yellow', fontSize: '1.3vw', marginTop: '10px' }}>
           Información guardada exitosamente
         </div>
        
@@ -676,8 +729,11 @@ constructor(props) {
        <br /> 
        </div>         
       )}  
+
+            
           <button type="submit" onClick={this.handleEnvioextra}>Confirmar</button>
 
+          
           </div>
         )}
             
@@ -774,5 +830,7 @@ function convertirTimestampAFechaHora(timestamp) {
 
   return `${fechaFormateada} ${horaFormateada}`;
 }
+
+
 
 
