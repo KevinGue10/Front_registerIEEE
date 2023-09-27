@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import logo from './img/logo.png'
 import foto1 from './img/back.png'
 import precio from './img/precio.png'
@@ -13,9 +15,15 @@ constructor(props) {
       selectedCountry: '',
       countries: [],
       indicativos: '+',
+      tdoc:'',
+      doc:'',
       afiliacion: '',
       correo: '',
       telefono: '',
+      ciudad:'',
+      direccion:'',
+      sexo:'',
+      fechaNacimiento:null,
       oficio: 'Estudiante',
       esMiembroIEEE: false,
       numeroMembresia: '',
@@ -45,6 +53,7 @@ constructor(props) {
       npgextras:'',
       artextras:'',
       nartextras:'',
+      condiciones:false,
       mostrarEstado:false,
       mostrarEstado2:false,
       mostrarEstado3:false,
@@ -68,6 +77,11 @@ constructor(props) {
       nombre: this.state.nombre,
       apellidos: this.state.apellidos,
       pais: this.state.selectedCountry,
+      ciudad:this.state.ciudad,
+      direccion:this.state.direccion,
+      fechaNacimiento:this.state.fechaNacimiento,
+      tdoc:this.state.tdoc,
+      doc:this.state.doc,
       afiliacion: this.state.afiliacion,
       correo: this.state.correo,
       telefono: this.state.indicativos+" "+this.state.telefono,
@@ -160,6 +174,20 @@ constructor(props) {
     this.setState({ selectedIndi: event.target.value });
   };
 
+  handleFechaNacimientoChange = (date) => {
+    const meses = [
+      "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+    ];
+  
+    // Obtener el día, el mes y el año de la fecha
+    const dia = date.getDate();
+    const mes = meses[date.getMonth()];
+    const año = date.getFullYear();
+  
+    // Crear la representación de la fecha en el formato deseado
+    const nuevaFecha = `${dia} / ${mes} /  ${año}`;
+    this.setState({ fechaNacimiento: nuevaFecha })
+  };
 
   handlePagar = (event) => {
     event.preventDefault();
@@ -379,7 +407,90 @@ constructor(props) {
           </select>
         </label>
           <br />
+          <label>
+            Ciudad
+            <br />
+            <input
+              type="text"
+              name="ciudad"
+              value={this.state.ciudad}
+              onChange={this.handleInputChange}
+              required
+            />
+          </label>
+          <br />
+          <label>
+            Dirección
+            <br />
+            <input
+              type="text"
+              name="direccion"
+              value={this.state.direccion}
+              onChange={this.handleInputChange}
+              required
+            />
+          </label>
+          <br />
+          <label>
+            Sexo
+            <br />
+            <select
+              name="sexo"
+              value={this.state.sexo}
+              onChange={this.handleInputChange}
+            >
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="No_decir">Prefiero no decirlo</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </label>
+          <br />
+         
+          <label>
+          Fecha de nacimiento
+          <br />
+          <DatePicker
+           className="fechaNacimientoPicker"
+              selected={this.fechaNacimiento}
+              onChange={this.handleFechaNacimientoChange}
+              value={this.state.fechaNacimiento}
+              dateFormat="dd/MM/yyyy"
+              showYearDropdown
+              yearDropdownItemNumber={60}
+              scrollableYearDropdown
+            />
 
+          </label>
+          <br />
+          <label>
+            Tipo de documento
+            <br />
+            <select
+              name="tdoc"
+              value={this.state.tdoc}
+              onChange={this.handleInputChange}
+            >
+              <option value="CC">CC</option>
+              <option value="CE">CE</option>
+              <option value="TI">TI</option>
+              <option value="Pasaporte">Pasaporte</option>
+            </select>
+          </label>
+          <br />
+
+          <label>
+            Documento de identidad
+            <br />
+            <input
+              type="text"
+              name="doc"
+              value={this.state.doc}
+              onChange={this.handleInputChange}
+              required
+            />
+          </label>
+          <br />
           <label>
             Afiliación institucional
             <br />
@@ -441,7 +552,7 @@ constructor(props) {
             </select>
           </label>
           <br />
-          <label>
+          <label className='miembro'>
              
               <input
                 type="checkbox"
@@ -568,11 +679,10 @@ constructor(props) {
       )}
        {this.state.tipoParticipacion === 'Asistente' && (
         
-        <div class="tutoriales">
-         
-          <label>
-            Selecciona los tutoriales por asistir:
-          <br />
+        <div>
+         <label>Selecciona los tutoriales por asistir:</label>
+         <br />
+         <label  className="tutoriales">
             <input
               class="tut"
               type="checkbox"
@@ -580,11 +690,11 @@ constructor(props) {
               checked={this.state.titulo1}
               onChange={() => this.setState({ titulo1: !this.state.titulo1 })}
             />
-            9:00: Information technologies management and competitive intelligence. By: Jose-Ignacio Castillo.
-            
+            9:00: Jose-Ignacio Castillo.
+            <p>Information technologies management and competitive intelligence.</p>
           </label>
           <br />
-          <label>
+          <label  className="tutoriales">
             <input
               class="tut"
               type="checkbox"
@@ -592,10 +702,11 @@ constructor(props) {
               checked={this.state.titulo2}
               onChange={() => this.setState({ titulo2: !this.state.titulo2 })}
             />
-           9:00: Tariff structure for wholesale and retail energy markets. By: Raquel Ronderos.
+           9:00: Raquel Ronderos
+           <p>Tariff structure for wholesale and retail energy markets.</p>
           </label>
           <br />
-          <label>
+          <label  className="tutoriales">
             <input
             class="tut"
               type="checkbox"
@@ -603,11 +714,11 @@ constructor(props) {
               checked={this.state.titulo3}
               onChange={() => this.setState({ titulo3: !this.state.titulo3 })}
             />
-          15:00: Data analytics: empowering insights and informed decision-making. By: Ana-Karina Rodríguez.
-
+          15:00: Ana-Karina Rodríguez
+          <p>Data analytics: empowering insights and informed decision-making </p>
           </label>
           <br />
-          <label>
+          <label  className="tutoriales">
             <input
             class="tut"
               type="checkbox"
@@ -615,7 +726,8 @@ constructor(props) {
               checked={this.state.titulo4}
               onChange={() => this.setState({ titulo4: !this.state.titulo4 })}
             />
-             15:00:  Trends on micro and nanoelectronics.. By: Ricardo Reis.
+             15:00: Ricardo Reis
+             <p> Trends on micro and nanoelectronics </p>
           </label>
           <br />
         </div>
@@ -644,12 +756,33 @@ constructor(props) {
             )}
             <br />
 
+            <label  className="condicion">
+             <input
+               type="checkbox"
+               name="condiciones"
+               checked={this.state.condiciones}
+               onChange={() => this.setState({ condiciones: !this.state.condiciones })}
+               required
+             />
+              PROTECCIÓN DE DATOS PERSONALES
+              <p>
+                Con la suscripción y diligenciamiento del presente formulario, usted acepta
+                el uso y tratamiento que da la universidad a esta información en consonancia
+                con las políticas contenidas en el siguiente link:{" "}
+                <a href="http://www.uninorte.edu.co/politica-de-privacidad-de-datos" target="_blank"  style={{ color: 'yellow' }}>
+                  www.uninorte.edu.co/politica-de-privacidad-de-datos
+                </a>
+                , las cuales declara conocer.
+              </p>
+          
+           </label>
+            <br />
 
           <button type="submit">Confirmar</button>
 
           {this.state.mostrarMensajeExito && (
         <div style={{ color: 'yellow', fontSize: '1.3vw', marginTop: '10px' }}>
-          Información guardada exitosamente
+          Información guardada exitosamente, continue en la sección de pago
         </div>
        
         )}
@@ -749,6 +882,7 @@ constructor(props) {
         <div class="cobro">
         
           <div class="datocobro">
+            <h1>Sección de pago</h1>
             <h2>El total a pagar es: </h2>
             <h2> {this.state.cobro} USD </h2>
             <div class="botones">
@@ -830,6 +964,8 @@ function convertirTimestampAFechaHora(timestamp) {
 
   return `${fechaFormateada} ${horaFormateada}`;
 }
+
+
 
 
 
