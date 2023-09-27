@@ -79,6 +79,7 @@ constructor(props) {
       pais: this.state.selectedCountry,
       ciudad:this.state.ciudad,
       direccion:this.state.direccion,
+       sexo: this.state.sexo,
       fechaNacimiento:this.state.fechaNacimiento,
       tdoc:this.state.tdoc,
       doc:this.state.doc,
