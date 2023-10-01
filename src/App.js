@@ -17,6 +17,7 @@ constructor(props) {
       indicativos: '+',
       tdoc:'CC',
       doc:'',
+      ndoc:'',
       afiliacion: '',
       correo: '',
       telefono: '',
@@ -47,7 +48,7 @@ constructor(props) {
           pages: '',
         },
       ],
-      nombresApellidos: [],
+      validarname: false,
       selectedNombreApellido: '',
       pgextras:'',
       npgextras:'',
@@ -66,7 +67,7 @@ constructor(props) {
       datosMetodo:'',
       datosReferencia:'',
       datosDescripcion:'',
-    };
+    };    
   }
 
 
@@ -99,7 +100,7 @@ constructor(props) {
       titulo4:this.state.titulo4,
       pimpuesto:this.state.pimpuesto
     };
-    console.log("boton presionado")
+   
   axios.post('http://54.236.126.192:8080/registro', formData)
       .then(response => {
       })
@@ -121,7 +122,20 @@ constructor(props) {
           console.error('Error al obtener el valor de cobro:', error);
         });
 
-
+         /*
+        axios.post('http://54.236.126.192:8080/send_email', formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            // Almacena el valor de cobro en el estado
+            this.setState({ cobro: response.data.cobro });
+          })
+          .catch((error) => {
+            console.error('Error al obtener el valor de cobro:', error);
+          });
+*/
         this.setState({ mostrarMensajeExito: true });
 
         // Después de cierto tiempo, ocultar el mensaje
@@ -283,23 +297,10 @@ constructor(props) {
       });    
   }
 
-  handleSelectChange = (event) => {
+ handleSelectChange = (event) => {
     const value = event.target.value;
     this.setState({ opregistro: value });
-
-    // Realizar la llamada a la API si se selecciona "Realizar pago extra"
-    
-    if (value === 'extra') {
-   
-      axios.get('http://54.236.126.192:8080/datos_usuarios')
-        .then(response => {
-          this.setState({ nombresApellidos: response.data });
-          // Realizar acciones adicionales según la respuesta de la API
-        })
-        .catch(error => {
-          console.error('Error al obtener datos de usuarios:', error);
-        });
-    }
+  
   };
 
   handleSelectName = (event) => {
@@ -332,6 +333,29 @@ constructor(props) {
     this.setState({ mostrarFactura: true });
   };
 
+  handleValidardoc = (event) => {
+    event.preventDefault();
+    this.state.validarname=true;
+    const formData = {
+      doc:this.state.ndoc,
+    };
+    axios.post('http://54.236.126.192:8080/datos_usuarios', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      // Procesar la respuesta del servidor
+      this.setState({ selectedNombreApellido: response.data });
+  
+      
+    })
+    .catch(error => {
+      // Manejar errores, si los hay
+      console.error('Error al enviar datos al servidor:', error);
+    }); 
+
+  }
 
 
   render() {
@@ -790,25 +814,30 @@ constructor(props) {
          </div> 
           )}
 
-        {this.state.opregistro === 'extra' && (
+            {this.state.opregistro === 'extra' && (
           <div class="naselect">
 
-          <label >
-          Selecciona nombre y apellido:
-          <select
-            value={this.state.selectedNombreApellido}
-            onChange={this.handleSelectName}
-          >
-            <option value="">Selecciona...</option>
-            {this.state.nombresApellidos.map((nombreApellido, index) => (
-              <option key={index} value={nombreApellido}>{nombreApellido}</option>
-            ))}
-          </select>
-        </label>
+            <label>
+            Ingrese su Documento de identidad
+            <br />
+            <input
+              type="text"
+              name="ndoc"
+              value={this.state.ndoc}
+              onChange={this.handleInputChange}
+              required
+            />
+          </label>
+          <br />
         
-        {this.state.selectedNombreApellido && (
+          <button type="submit" onClick={this.handleValidardoc}>Validar</button>
+          
+        {this.state.validarname &&(
+          <div>
+        {this.state.selectedNombreApellido ? (
           <div>
             <label>
+            <h2>Usuario: {this.state.selectedNombreApellido}</h2>
             Selecciona los items extras
           <br />
             <input
@@ -869,8 +898,13 @@ constructor(props) {
 
           
           </div>
+        ) : (
+          <div>
+            <h2 style={{ color: 'white', }}>Usuario no encontrado</h2>
+          </div>
         )}
-            
+        </div>
+        )} 
           </div>
 
           )}
