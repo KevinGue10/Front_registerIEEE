@@ -37,6 +37,7 @@ constructor(props) {
       cobro: 0,
       mostrarMensajeExito: false, 
       mensaje: '',
+      atutoriales:false,
       titulo1:false,
       titulo2:false,
       titulo3:false,
@@ -700,9 +701,20 @@ constructor(props) {
           </div>
         ))}
       </div>
+
+        <label>
+             <input
+               type="checkbox"
+               name="atutoriales"
+               checked={this.state.atutoriales}
+               onChange={() => this.setState({ atutoriales: !this.state.atutoriales })}
+             />
+              ¿Asistirá a tutoriales?
+           </label>
+           <br />
         </div>
       )}
-       {this.state.tipoParticipacion === 'Asistente' && (
+        {this.state.tipoParticipacion === 'Asistente' || this.state.atutoriales &&(
         
         <div>
          <label>Selecciona los tutoriales por asistir:</label>
