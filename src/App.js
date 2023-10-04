@@ -123,7 +123,7 @@ constructor(props) {
           console.error('Error al obtener el valor de cobro:', error);
         });
 
-         /*
+         
         axios.post('http://54.236.126.192:8080/send_email', formData, {
           headers: {
             'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ constructor(props) {
           .catch((error) => {
             console.error('Error al obtener el valor de cobro:', error);
           });
-*/
+
         this.setState({ mostrarMensajeExito: true });
 
         // Después de cierto tiempo, ocultar el mensaje
