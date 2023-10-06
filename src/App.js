@@ -714,7 +714,7 @@ constructor(props) {
            <br />
         </div>
       )}
-        {this.state.tipoParticipacion === 'Asistente' || this.state.atutoriales &&(
+        {(this.state.tipoParticipacion === 'Asistente' || this.state.atutoriales) &&(
         
         <div>
          <label>Selecciona los tutoriales por asistir:</label>
