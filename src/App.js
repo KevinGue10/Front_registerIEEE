@@ -130,11 +130,10 @@ constructor(props) {
           },
         })
           .then((response) => {
-            // Almacena el valor de cobro en el estado
-            this.setState({ cobro: response.data.cobro });
+            
           })
           .catch((error) => {
-            console.error('Error al obtener el valor de cobro:', error);
+            console.error('Error al enviar el email:', error);
           });
 
         this.setState({ mostrarMensajeExito: true });
