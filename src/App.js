@@ -777,6 +777,7 @@ constructor(props) {
         </div>
       )}
              <label>
+              <br />
              <input
                type="checkbox"
                name="impuesto"
