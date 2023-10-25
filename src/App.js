@@ -625,7 +625,7 @@ constructor(props) {
         <input
           type="radio"
           name="tipoParticipacion"
-          value="Autor"
+          value="Poster"
           checked={this.state.tipoParticipacion === 'Poster'}
           onChange={this.handleInputChange}
         />
