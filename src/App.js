@@ -622,6 +622,14 @@ constructor(props) {
           onChange={this.handleInputChange}
         />
         Asistente
+        <input
+          type="radio"
+          name="tipoParticipacion"
+          value="Autor"
+          checked={this.state.tipoParticipacion === 'Poster'}
+          onChange={this.handleInputChange}
+        />
+        Poster   
       </label>
       <br />
       <label>
