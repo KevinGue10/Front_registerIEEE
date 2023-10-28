@@ -68,10 +68,10 @@ constructor(props) {
       datosMetodo:'',
       datosReferencia:'',
       datosDescripcion:'',
+      cupon:''
     };    
   }
-
-
+    
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -99,7 +99,8 @@ constructor(props) {
       titulo2:this.state.titulo2,
       titulo3:this.state.titulo3,
       titulo4:this.state.titulo4,
-      pimpuesto:this.state.pimpuesto
+      pimpuesto:this.state.pimpuesto,
+      cupon:this.state.cupon
     };
    
   axios.post('http://54.236.126.192:8080/registro', formData)
@@ -800,7 +801,16 @@ constructor(props) {
               </label>
             )}
             <br />
-
+            <label>
+              Código de descuento
+            <input
+              type="text"
+              name="cupon"
+              value={this.state.cupon}
+              onChange={this.handleInputChange}
+            />
+             </label>
+             <br />
             <label  className="condicion">
              <input
                type="checkbox"
