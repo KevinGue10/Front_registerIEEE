@@ -630,7 +630,24 @@ constructor(props) {
           checked={this.state.tipoParticipacion === 'Poster'}
           onChange={this.handleInputChange}
         />
-        Poster   
+        Poster
+        <br/>
+        <input
+          type="radio"
+          name="tipoParticipacion"
+          value="Patrocinador"
+          checked={this.state.tipoParticipacion === 'Patrocinador'}
+          onChange={this.handleInputChange}
+        />
+        Patrocinador   
+        <input
+          type="radio"
+          name="tipoParticipacion"
+          value="Speaker"
+          checked={this.state.tipoParticipacion === 'Speaker'}
+          onChange={this.handleInputChange}
+        />
+        Speaker   
       </label>
       <br />
       <label>
